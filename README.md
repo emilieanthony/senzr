@@ -10,6 +10,9 @@ Elevated carbon dioxide concentrations are an indication that there isn’t enou
 
 Through a carbon dioxide sensor, Senzr App will notify the user when high levels of carbon dioxide occur. Senzr App also allows the user to track carbon dioxdide levels over time. With this information, the user can take action to improve the indoor air quality.
 
+## Guides
+- https://www.dracal.com/store/support/linux_howto/index.php
+
 ## Contributors
 - Emilie Anthony https://github.com/emilieanthony
 - Andreas Bäckevik https://github.com/backevik
