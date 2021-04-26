@@ -1,1 +1,1 @@
-# senzr
+# Senzr App
