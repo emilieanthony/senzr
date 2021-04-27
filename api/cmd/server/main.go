@@ -6,20 +6,15 @@ import (
 
 	"github.com/emilieanthony/senzr/internal/svc/carbon_dioxide"
 	"github.com/gin-gonic/gin"
-	"github.com/kelseyhightower/envconfig"
 )
 
 const (
 	PORT = 3000
 )
 
-type Environment struct {
-	DBHost string `envconfig:"db_host"` // SENZR_DB_HOST
-}
-
 func main() {
-	// load env
-	loadEnv()
+	// TODO: add database migrations
+	// https://github.com/golang-migrate/migrate
 
 	// controllers
 	cs := carbon_dioxide.Controller{}
@@ -34,14 +29,4 @@ func main() {
 		log.Fatal(err.Error())
 	}
 	log.Printf("server successfully started on port %v", PORT)
-}
-
-func loadEnv() *Environment {
-	var e Environment
-	err := envconfig.Process("senzr", &e)
-	if err != nil {
-		log.Fatalf("could not load environment config: %s", err.Error())
-	}
-	log.Print("environment variables successfully loaded")
-	return &e
 }
