@@ -12,7 +12,7 @@ func main() {
 
 	err := pico.Boot()
 	if err != nil {
-		log.Fatal("could not boot pico sensor software: %w", err)
+		log.Fatalf("could not boot pico sensor software: %v", err)
 	}
 
 	fmt.Println("Hello Pico!")
