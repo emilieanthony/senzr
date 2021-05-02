@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	processName = "usbtenkiget"
+	processName = "/usr/local/bin/usbtenkiget"
 	/*
 		the -i flag takes comma-separated sensor channels.
 		00 - co2

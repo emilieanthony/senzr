@@ -15,7 +15,7 @@ build-rpi:
 	env GOOS=linux GOARCH=arm go build -o ${out} ${package}
 
 install-pico-deps:
-	sudo apt-get install libusb-dev
+	sudo apt-get install libusb-1.0-0.dev
 
 install-pico: install-pico-deps
 	mkdir -p tools
@@ -23,6 +23,7 @@ install-pico: install-pico-deps
 	tar xvzf ${pico_software_name}.tar.gz -C tools/
 	rm ${pico_software_name}.tar.gz
 	cd tools/${pico_software_name}-${pico_software_version}/client && make
+	sudo cp tools/${pico_software_name}-${pico_software_version}/client/usbtenkiget /usr/local/bin/
 
 install:
 	go install ${package}
