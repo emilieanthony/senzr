@@ -1,7 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+
+	"github.com/emilieanthony/senzr/rpi/sensor/pico"
+)
 
 func main() {
-	fmt.Println("Hello Raspberry Pi!")
+	pico := pico.NewSensor()
+
+	err := pico.Boot()
+	if err != nil {
+		log.Fatal("could not boot pico sensor software: %w", err)
+	}
+
+	fmt.Println("Hello Pico!")
 }
