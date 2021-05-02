@@ -22,3 +22,7 @@ doc/api/
 
 # IDE
 .idea/
+
+# RPI project
+rpi/build/
+rpi/tools/
