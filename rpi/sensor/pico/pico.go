@@ -1,8 +1,8 @@
 package pico
 
 import (
+	"encoding/json"
 	"fmt"
-	"io"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -25,9 +25,18 @@ const (
 )
 
 type Data struct {
-	Co2         float64
-	Temperature float64
-	Humidity    float64
+	Co2         float64   `json:"co2"`
+	Temperature float64   `json:"temperature"`
+	Humidity    float64   `json:"humidity"`
+	Timestamp   time.Time `json:"timestamp"`
+}
+
+func (d *Data) Encode() ([]byte, error) {
+	b, err := json.Marshal(d)
+	if err != nil {
+		return nil, err
+	}
+	return b, nil
 }
 
 type Sensor struct {
@@ -68,7 +77,7 @@ func (s *Sensor) Read(d *Data) error {
 	if s.ProcessExited() {
 		return fmt.Errorf("process %s is not running", processName)
 	}
-	reader := io.Reader(s.process.Stdin)
+	reader := s.process.Stdin
 	b := make([]byte, 0)
 	now := time.Now().String()
 	n, err := reader.Read(b)
@@ -98,5 +107,6 @@ func (s *Sensor) Read(d *Data) error {
 			d.Humidity = f
 		}
 	}
+	d.Timestamp = time.Now()
 	return nil
 }
