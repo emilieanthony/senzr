@@ -1,0 +1,12 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    container_name: senzr_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=senzr_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=gbgftw

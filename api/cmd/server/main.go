@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/emilieanthony/senzr/internal/svc/carbon_dioxide"
+	"github.com/emilieanthony/senzr/internal/db"
+
+	"github.com/emilieanthony/senzr/internal/svc/rpi"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,11 +15,12 @@ const (
 )
 
 func main() {
-	// TODO: add database migrations
-	// https://github.com/golang-migrate/migrate
+	if err := db.MigrateSchemas(); err != nil {
+		log.Fatal(err.Error())
+	}
 
 	// controllers
-	cs := carbon_dioxide.Controller{}
+	cs := rpi.Controller{}
 
 	// routes
 	r := gin.Default()
