@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/emilieanthony/senzr/rpi/cloud"
-
 	"github.com/emilieanthony/senzr/rpi/sensor/pico"
 )
 

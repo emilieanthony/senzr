@@ -11,7 +11,7 @@ import (
 
 const (
 	topic     = "senzr_rpi_data"
-	ProjectID = "" // TODO: create project
+	ProjectID = "senzr-313218"
 )
 
 type PubSub struct {
