@@ -1,6 +1,8 @@
 package pico
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"os/exec"
@@ -39,9 +41,7 @@ func (d *Data) Encode() ([]byte, error) {
 	return b, nil
 }
 
-type Sensor struct {
-	process *exec.Cmd
-}
+type Sensor struct{}
 
 func NewSensor() *Sensor {
 	return &Sensor{}
@@ -51,58 +51,48 @@ func NewSensor() *Sensor {
 	starts child process that reads sensor data and keeps reader and writer references to that process
 	source: https://www.dracal.com/store/support/programmers_howto/index.php
 */
-func (s *Sensor) Boot() error {
-	process := exec.Command(processName, channelsFlag)
+func (s *Sensor) ReadValue(ctx context.Context) (*bytes.Buffer, error) {
+	var data bytes.Buffer
+	process := exec.CommandContext(ctx, processName, channelsFlag)
+	process.Stdout = &data
 	err := process.Run()
 	if err != nil {
-		return fmt.Errorf("could not start process %s: %w", processName, err)
+		return nil, fmt.Errorf("could not start process %s: %w", processName, err)
 	}
-	// err = process.Wait() // wait for process to start
-	// if err != nil {
-	// 	return fmt.Errorf("failed waiting for process %s: %w", processName, err)
-	// }
-
-	if process.ProcessState.Exited() {
-		return fmt.Errorf("process %s failed unexpectedly", processName)
-	}
-	s.process = process
-	return nil
+	return &data, nil
 }
 
-func (s *Sensor) ProcessExited() bool {
-	return s.process.ProcessState.Exited()
-}
-
-func (s *Sensor) Read(d *Data) error {
-	if s.ProcessExited() {
-		return fmt.Errorf("process %s is not running", processName)
-	}
-	reader := s.process.Stdin
-	b := make([]byte, 0)
-	now := time.Now().String()
-	n, err := reader.Read(b)
+func (s *Sensor) Read(ctx context.Context, d *Data) error {
+	now := time.Now().Format(time.RFC3339)
+	data, err := s.ReadValue(ctx)
 	if err != nil {
-		return fmt.Errorf("[%s] could not read data: %w", now, err)
+		return fmt.Errorf("reading value: %w", err)
 	}
-	fmt.Printf("[%s] read %d bytes", now, n)
-	rawData := strings.Split(string(b), ",")
-	if len(rawData) > co2ChannelIndex+1 {
+	fmt.Printf("[%s] read %d bytes \n", now, data.Len())
+	rawData := strings.Split(data.String(), ",")
+	if len(rawData) > co2ChannelIndex {
 		f, err := strconv.ParseFloat(rawData[co2ChannelIndex], 32)
 		// ignore parse error and just skip saving sensor data
 		if err == nil {
 			d.Co2 = f
 		}
 	}
-	if len(rawData) > temperatureChannelIndex+1 {
-		f, err := strconv.ParseFloat(rawData[temperatureChannelIndex], 32)
+	if len(rawData) > temperatureChannelIndex {
+		f, err := strconv.ParseFloat(strings.TrimSpace(rawData[temperatureChannelIndex]), 32)
 		// ignore parse error and just skip saving sensor data
+		if err != nil {
+			fmt.Printf("warning: temperature parse error: %v \n", err)
+		}
 		if err == nil {
 			d.Temperature = f
 		}
 	}
-	if len(rawData) > humidityChannelIndex+1 {
-		f, err := strconv.ParseFloat(rawData[humidityChannelIndex], 32)
+	if len(rawData) > humidityChannelIndex {
+		f, err := strconv.ParseFloat(strings.TrimSpace(rawData[humidityChannelIndex]), 32)
 		// ignore parse error and just skip saving sensor data
+		if err != nil {
+			fmt.Printf("warning: humidity parse error: %v \n", err)
+		}
 		if err == nil {
 			d.Humidity = f
 		}

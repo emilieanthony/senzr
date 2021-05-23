@@ -28,19 +28,15 @@ func main() {
 	}()
 	// init sensor
 	sensor := pico.NewSensor()
-	err = sensor.Boot()
-	if err != nil {
-		log.Fatalf("could not boot pico sensor software: %v", err)
-	}
-	fmt.Printf("Successfully booted application!")
+	fmt.Printf("Successfully booted application! \n")
 	sensorDataChannel := make(chan *pico.Data, 0)
 	// start sensor read polling
 	go poll(readInterval, func() {
-		var data *pico.Data
-		if err := sensor.Read(data); err != nil {
+		var data pico.Data
+		if err := sensor.Read(ctx, &data); err != nil {
 			fmt.Printf("error reading sensor data: %v", err)
 		} else {
-			sensorDataChannel <- data
+			sensorDataChannel <- &data
 		}
 	})
 
