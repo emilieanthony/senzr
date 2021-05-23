@@ -5,13 +5,16 @@ import (
 	"fmt"
 	"time"
 
+	"google.golang.org/api/option"
+
 	"cloud.google.com/go/pubsub"
 	"github.com/emilieanthony/senzr/rpi/sensor/pico"
 )
 
 const (
-	topic     = "senzr_rpi_data"
-	ProjectID = "senzr-313218"
+	topic           = "senzr_rpi_data"
+	credentialsPath = "../credentials/senzr-313218-1450f27a71a6.json"
+	ProjectID       = "senzr-313218"
 )
 
 type PubSub struct {
@@ -20,7 +23,7 @@ type PubSub struct {
 }
 
 func NewPubSubClient(ctx context.Context) (*PubSub, error) {
-	client, err := pubsub.NewClient(ctx, ProjectID)
+	client, err := pubsub.NewClient(ctx, ProjectID, option.WithCredentialsFile(credentialsPath))
 	if err != nil {
 		return nil, fmt.Errorf("creating client: %w", err)
 	}
