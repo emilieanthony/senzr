@@ -27,10 +27,7 @@ func NewPubSubClient(ctx context.Context) (*PubSub, error) {
 	if err != nil {
 		return nil, fmt.Errorf("creating client: %w", err)
 	}
-	topic, err := client.CreateTopic(context.Background(), topic)
-	if err != nil {
-		return nil, fmt.Errorf("creating topic: %v", err)
-	}
+	topic := client.Topic(topic)
 	return &PubSub{
 		client: client,
 		topic:  topic,
