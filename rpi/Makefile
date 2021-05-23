@@ -24,6 +24,9 @@ install-pico: install-pico-deps
 	rm ${pico_software_name}.tar.gz
 	cd tools/${pico_software_name}-${pico_software_version}/client && make
 	sudo cp tools/${pico_software_name}-${pico_software_version}/client/usbtenkiget /usr/local/bin/
+	sudo chmod 777 /usr/local/bin/usbtenkiget
+	sudo cp tools/${pico_software_name}-${pico_software_version}/scripts/99-usbtenki.rules /etc/udev/rules.d/
+	sudo udevadm control --reload-rules
 
 install:
 	go install ${package}
