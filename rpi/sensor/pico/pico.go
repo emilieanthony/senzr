@@ -53,14 +53,14 @@ func NewSensor() *Sensor {
 */
 func (s *Sensor) Boot() error {
 	process := exec.Command(processName, channelsFlag)
-	err := process.Start()
+	err := process.Run()
 	if err != nil {
 		return fmt.Errorf("could not start process %s: %w", processName, err)
 	}
-	err = process.Wait() // wait for process to start
-	if err != nil {
-		return fmt.Errorf("failed waiting for process %s: %w", processName, err)
-	}
+	// err = process.Wait() // wait for process to start
+	// if err != nil {
+	// 	return fmt.Errorf("failed waiting for process %s: %w", processName, err)
+	// }
 
 	if process.ProcessState.Exited() {
 		return fmt.Errorf("process %s failed unexpectedly", processName)
