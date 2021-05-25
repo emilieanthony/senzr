@@ -13,6 +13,6 @@ Through a carbon dioxide sensor, Senzr App will notify the user when high levels
 ## Guides
 - https://www.dracal.com/store/support/linux_howto/index.php
 
-## Contributors
+## Developers
 - [Emilie Anthony](https://github.com/emilieanthony)
 - [Andreas Bäckevik](https://github.com/backevik)
