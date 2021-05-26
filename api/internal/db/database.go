@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -26,10 +27,14 @@ func newDBConnection() (_ *sqlx.DB, err error) {
 	if err != nil {
 		return nil, fmt.Errorf("getting environment: %w", err)
 	}
+	var ssl string
+	if strings.Contains(env.DBHost, "localhost") {
+		ssl = "sslmode=disable"
+	}
 	db, err := sqlx.Connect(
 		driver,
-		fmt.Sprintf("postgresql://%s:%s@%s/%s?sslmode=disable",
-			env.DBUser, env.DBPassword, env.DBHost, env.DBName,
+		fmt.Sprintf("user=%s password=%s database=%s host=%s %s",
+			env.DBUser, env.DBPassword, env.DBName, env.DBHost, ssl,
 		),
 	)
 	if err != nil {
