@@ -1,0 +1,13 @@
+/* ---------------- TAG STYLING ------------------ */
+
+body {
+  background-color: #c6d6fc;
+  margin: 0;
+}
+
+/* ---------------- CLASS STYLING ------------------ */
+
+.header {
+  margin: 0;
+  padding: 0;
+}

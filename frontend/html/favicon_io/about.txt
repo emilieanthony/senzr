@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: League Script
+- Font Author: Copyright (c) 2010, Haley Fiege (haley@kingdomofawesome.com
+- Font Source: http://fonts.gstatic.com/s/leaguescript/v14/CSR54zpSlumSWj9CGVsoBZdeaNNUuOwkC2s.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL)
