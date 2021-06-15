@@ -4,10 +4,20 @@ body {
   background-color: #c6d6fc;
   margin: 0;
 }
+img {
+  margin: 0;
+  display: inline-flex;
+}
 
 /* ---------------- CLASS STYLING ------------------ */
 
-.header {
-  margin: 0;
-  padding: 0;
+.logo {
+  width: 200px;
+  height: 200px;
+}
+
+.logo img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
 }
