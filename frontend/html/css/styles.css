@@ -34,16 +34,6 @@ p {
   font-size: 18px;
   margin-left: 16px;
 }
-/* ------- FONTS -----*/
-@font-face {
-  font-family: ;
-  src: url();
-}
-
-@font-face {
-  font-family: bread;
-  src: url();
-}
 
 /* ---------------- CLASS STYLING ------------------ */
 
