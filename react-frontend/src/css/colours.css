@@ -1,0 +1,38 @@
+/*
+  --------------- Background colours -----------
+  background-colour-lm: #fafafa
+  background-colour-dm: #393939
+
+  ---------------- Brand colours -------------
+  brand-colour: #9BBAFF
+  monocromic: ##6897FF
+  complementary: ##FFE09B
+  angulus1: ##AE9BFF
+  angulus2: ##9BECFF
+
+
+  ---------- Layout colours [light mode] -----------
+  light-colour: #BCC7E0
+  contrast-colour-lm: #323232
+  reduced-contrast-colour-lm: #615F5F
+
+  ---------- Layout colours [dark mode] ------------
+
+  dark-colour: #615F5F
+  contrast-colour-dm: #F9F9F9
+  reduced-contrast-colour-dm: #BCC7E0
+
+  ------- Denotive colours ------------------
+  success-colour: #82E3B5
+  fail-colour: #CC3333
+  disable-colour-lm: #929292
+  disable-colour-dm: #585858
+
+  ------ Interactive colours -------------
+  interactive+2: #DFE9FF
+  interactive+1: #C1D4FF
+  interactive_0: #9BBAFF
+  interactive-1: #7CA5FF
+  interactive-2: #588CFF
+
+  */
