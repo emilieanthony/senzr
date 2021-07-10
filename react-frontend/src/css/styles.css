@@ -1,0 +1,77 @@
+/* ---------------- TAG STYLING ------------------ */
+
+body {
+  background-color: #fafafa;
+  margin: 0;
+  font-size: 12;
+}
+img {
+  margin: 0;
+  display: inline-flex;
+  opacity: 75%;
+}
+
+h1 {
+  color: #9bbaff;
+  display: inline-flex;
+  font-family: "Bebas Neue", cursive;
+  font-size: 64px;
+  margin-left: 16px;
+}
+
+h2 {
+  color: #9bbaff;
+  display: inline-flex;
+  font-family: "Bebas Neue", cursive;
+  font-size: 32px;
+  margin-left: 16px;
+}
+
+p {
+  color: #444444;
+  display: inline-flex;
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  margin-left: 16px;
+}
+
+/* ---------------- CLASS STYLING ------------------ */
+
+.logo {
+  margin: 16px;
+  width: 100px;
+  height: 100px;
+}
+
+.logo img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+.text-block {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.header img {
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.app-background {
+  background-image: url("../assets/clouds.png");
+  width: 100vw;
+  height: 100vh;
+}
+
+.app-container {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 64px 1fr 100px;
+}
