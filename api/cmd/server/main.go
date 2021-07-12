@@ -10,7 +10,9 @@ import (
 )
 
 const (
-	PORT = 3000
+	Port     = 3000
+	BasePath = "/api"
+	V1       = "/v1"
 )
 
 func main() {
@@ -18,17 +20,23 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	database := db.Db{}
+
 	// controllers
-	cs := rpi.Controller{}
+	rpiServer := rpi.Server{Db: &database}
 
 	// routes
 	r := gin.Default()
-	r.GET("/helloworld", cs.HelloWorld)
+	v1 := r.Group(BasePath + V1)
+	{
+		v1.GET("/helloworld", rpiServer.HelloWorld)
+		v1.GET("/co2/latest", rpiServer.GetLatestCarbonDioxideEntry)
+	}
 
 	// start app
-	err := r.Run(fmt.Sprintf(":%v", PORT))
+	err := r.Run(fmt.Sprintf(":%v", Port))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	log.Printf("server successfully started on port %v", PORT)
+	log.Printf("server successfully started on port %v", Port)
 }

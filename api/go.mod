@@ -19,4 +19,5 @@ require (
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/api v0.45.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gotest.tools v2.2.0+incompatible // indirect
 )
