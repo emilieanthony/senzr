@@ -1,21 +1,45 @@
 package rpi
 
 import (
+	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/emilieanthony/senzr/internal/db"
 	"github.com/gin-gonic/gin"
 )
 
-/*
-	SENSOR DATA INTERFACE:
-	Co2         float64   `json:"co2"`
-	Temperature float64   `json:"temperature"`
-	Humidity    float64   `json:"humidity"`
-	Timestamp   time.Time `json:"timestamp"`
-*/
+type carbonDioxideEntry struct {
+	Id        string    `json:"id" db:"id"`
+	Value     float64   `json:"value" db:"value"`
+	Timestamp time.Time `json:"createdAt" db:"created_at"`
+}
 
-type Controller struct{}
+type Server struct {
+	Db db.Database
+}
 
-func (c *Controller) HelloWorld(ctx *gin.Context) {
+func (s *Server) HelloWorld(ctx *gin.Context) {
 	ctx.String(http.StatusOK, "Hello world!")
+}
+
+func (s *Server) GetLatestCarbonDioxideEntry(ctx *gin.Context) {
+	tx, err := s.Db.BeginTransaction()
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, "GetLatestDataEntry: connecting to database")
+		return
+	}
+	query := "SELECT * FROM carbon_dioxide ORDER BY created_at DESC LIMIT 1"
+	data := make([]*carbonDioxideEntry, 0)
+	if err := tx.Select(&data, query); err != nil {
+		ctx.String(http.StatusInternalServerError, "GetLatestDataEntry: getting from database")
+		return
+	}
+	fmt.Printf("data: %v \n", data)
+	if err := tx.Commit(); err != nil {
+		ctx.String(http.StatusInternalServerError, "GetLatestDataEntry: committing transaction")
+	}
+
+	ctx.JSON(http.StatusOK, data)
+	return
 }
