@@ -1,4 +1,9 @@
 steps:
+  - id: lint
+    name: golang:1.16.6-buster
+    dir: api
+    args: ['make', 'lint']
+
   - id: test
     name: golang:1.16.6-buster
     dir: api
