@@ -27,3 +27,6 @@ doc/api/
 # RPI project
 rpi/build/
 rpi/tools/
+
+# tools
+**/tools/*/**

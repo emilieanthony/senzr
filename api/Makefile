@@ -1,4 +1,4 @@
-all:
+include tools/golangci-lint/rules.mk
 
 develop: run-database
 	go run ./cmd/server/main.go
@@ -12,3 +12,5 @@ deploy:
 
 test:
 	go test ./...
+
+lint: golangci-lint

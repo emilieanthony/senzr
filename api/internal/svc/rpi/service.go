@@ -41,5 +41,4 @@ func (s *Server) GetLatestCarbonDioxideEntry(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, data)
-	return
 }
