@@ -37,4 +37,4 @@ test:
 
 lint: golangci-lint
 
-build: install-pico build-rpi install
+build: build-rpi install
