@@ -1,15 +1,15 @@
 steps:
   - id: install
     name: golang:1.16.6-buster
-    dir: api
+    dir: cloud-receiver
     args: ['make', 'install']
 
   - id: lint
     name: golang:1.16.6-buster
-    dir: api
+    dir: cloud-receiver
     args: ['make', 'lint']
 
   - id: test
     name: golang:1.16.6-buster
-    dir: api
+    dir: cloud-receiver
     args: ['make', 'test']
