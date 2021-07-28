@@ -29,7 +29,7 @@ func main() {
 	// init sensor
 	sensor := pico.NewSensor()
 	fmt.Printf("Successfully booted application! \n")
-	sensorDataChannel := make(chan *pico.Data, 0)
+	sensorDataChannel := make(chan *pico.Data)
 	// start sensor read polling
 	go poll(readInterval, func() {
 		var data pico.Data
@@ -48,9 +48,7 @@ func main() {
 func poll(interval time.Duration, fn func()) {
 	ticker := time.NewTicker(interval)
 	for {
-		select {
-		case <-ticker.C:
-			fn()
-		}
+		<-ticker.C
+		fn()
 	}
 }
