@@ -29,4 +29,4 @@ rpi/build/
 rpi/tools/
 
 # tools
-**/tools/*/**
+tools/*/**

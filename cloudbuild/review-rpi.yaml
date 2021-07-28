@@ -1,15 +1,15 @@
 steps:
-  - id: install
-    name: golang:1.16.6-buster
-    dir: api
-    args: ['make', 'install']
-
   - id: lint
     name: golang:1.16.6-buster
-    dir: api
+    dir: rpi
     args: ['make', 'lint']
 
   - id: test
     name: golang:1.16.6-buster
-    dir: api
+    dir: rpi
     args: ['make', 'test']
+
+  - id: build
+    name: golang:1.16.6-buster
+    dir: rpi
+    args: ['make', 'build']

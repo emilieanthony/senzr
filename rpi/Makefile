@@ -1,3 +1,4 @@
+include ../tools/golangci-lint/rules.mk
 
 package = github.com/emilieanthony/senzr/rpi
 out = build/rpi
@@ -30,3 +31,10 @@ install-pico: install-pico-deps
 
 install:
 	go install ${package}
+
+test:
+	go test ./...
+
+lint: golangci-lint
+
+build: install-pico build-rpi install
