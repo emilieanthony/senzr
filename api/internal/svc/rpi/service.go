@@ -19,8 +19,8 @@ type Server struct {
 	Db db.Database
 }
 
-func (s *Server) HelloWorld(ctx *gin.Context) {
-	ctx.String(http.StatusOK, "Hello world!")
+func (s *Server) Ping(ctx *gin.Context) {
+	ctx.String(http.StatusOK, "pong")
 }
 
 func (s *Server) GetLatestCarbonDioxideEntry(ctx *gin.Context) {
