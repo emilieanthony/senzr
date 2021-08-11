@@ -5,11 +5,12 @@ import (
 )
 
 type environment struct {
-	DBHost     string `envconfig:"db_host" default:"localhost"`  // SENZR_DB_HOST
-	DBName     string `envconfig:"db_name" default:"senzr_db"`   // SENZR_DB_NAME
-	DBPort     string `envconfig:"db_port" default:"5432"`       // SENZR_DB_PORT
-	DBUser     string `envconfig:"db_user" default:"root"`       // SENZR_DB_USER
-	DBPassword string `envconfig:"db_password" default:"gbgftw"` // SENZR_DB_PASSWORD
+	DBHost     string `envconfig:"db_host" default:"localhost"`      // SENZR_DB_HOST
+	DBName     string `envconfig:"db_name" default:"senzr_db"`       // SENZR_DB_NAME
+	DBPort     string `envconfig:"db_port" default:"5432"`           // SENZR_DB_PORT
+	DBUser     string `envconfig:"db_user" default:"root"`           // SENZR_DB_USER
+	DBPassword string `envconfig:"db_password" default:"gbgftw"`     // SENZR_DB_PASSWORD
+	AuthKey    string `envconfig:"auth_key" default:"api.clerk.dev"` // SENZR_AUTH_KEY
 }
 
 func Env() (*environment, error) {

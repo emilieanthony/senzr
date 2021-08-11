@@ -3,7 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 
+	"github.com/clerkinc/clerk-sdk-go/clerk"
+	"github.com/emilieanthony/senzr/internal/config"
 	"github.com/emilieanthony/senzr/internal/db"
 	"github.com/emilieanthony/senzr/internal/svc/rpi"
 	"github.com/gin-gonic/gin"
@@ -20,23 +23,50 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	env, err := config.Env()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	clerkClient, err := clerk.NewClient(env.AuthKey)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
 	database := db.Db{}
 
 	// controllers
 	rpiServer := rpi.Server{Db: &database}
 
 	// routes
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+
 	v1 := r.Group(BasePath + V1)
 	{
-		v1.GET("/helloworld", rpiServer.HelloWorld)
+		v1.GET("/ping", rpiServer.Ping)
+	}
+	v1.Use(Auth(clerkClient))
+	{
 		v1.GET("/co2/latest", rpiServer.GetLatestCarbonDioxideEntry)
 	}
 
 	// start app
-	err := r.Run(fmt.Sprintf(":%v", Port))
+	err = r.Run(fmt.Sprintf(":%v", Port))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	log.Printf("server successfully started on port %v", Port)
+}
+
+func Auth(client clerk.Client) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session, err := client.Verification().Verify(c.Request)
+		if err != nil {
+			c.String(http.StatusUnauthorized, "Unauthorized")
+			c.Abort()
+		}
+		c.Set("session", session)
+		c.Next()
+	}
 }
