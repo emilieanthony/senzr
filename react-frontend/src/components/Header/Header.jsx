@@ -3,7 +3,7 @@ import './header.css';
 const Header = () => {
   return (
     <div className="header">
-      Header
+      <h2 className="title">Senzr</h2>
       <div className="settings">
         <UserButton />
       </div>
