@@ -7,7 +7,6 @@ import (
 
 	"github.com/clerkinc/clerk-sdk-go/clerk"
 	"github.com/emilieanthony/senzr/internal/config"
-	"github.com/emilieanthony/senzr/internal/db"
 	"github.com/emilieanthony/senzr/internal/svc/rpi"
 	"github.com/gin-gonic/gin"
 )
@@ -19,10 +18,6 @@ const (
 )
 
 func main() {
-	if err := db.MigrateSchemas(); err != nil {
-		log.Fatal(err.Error())
-	}
-
 	env, err := config.Env()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -32,10 +27,8 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	database := db.Db{}
-
 	// controllers
-	rpiServer := rpi.Server{Db: &database}
+	rpiServer := rpi.Server{}
 
 	// routes
 	r := gin.New()
@@ -49,6 +42,8 @@ func main() {
 	v1.Use(Auth(clerkClient))
 	{
 		v1.GET("/co2/latest", rpiServer.GetLatestCarbonDioxideEntry)
+		v1.GET("/temperature/latest", rpiServer.GetLatestTemperatureEntry)
+		v1.GET("/humidity/latest", rpiServer.GetLatestHumidityEntry)
 	}
 
 	// start app

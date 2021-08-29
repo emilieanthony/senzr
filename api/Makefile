@@ -1,10 +1,7 @@
 include ../tools/golangci-lint/rules.mk
 
-develop: run-database
+develop:
 	go run ./cmd/server/main.go
-
-run-database:
-	docker compose up -d
 
 deploy:
 	gcloud builds submit --tag gcr.io/senzr-313218/senzr

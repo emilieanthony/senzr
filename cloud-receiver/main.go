@@ -1,18 +1,29 @@
 package cloud_receiver
 
 import (
+	"cloud.google.com/go/firestore"
 	"context"
 	"encoding/json"
 	"fmt"
+	"google.golang.org/api/option"
+	"log"
+	"time"
 
-	"github.com/jmoiron/sqlx"
 	"github.com/kelseyhightower/envconfig"
 	_ "github.com/lib/pq"
 )
 
 const (
-	driver = "postgres"
+	CollectionCO2         = "carbon_dioxide"
+	CollectionTemperature = "temperature"
+	CollectionHumidity    = "humidity"
+	credentialsPath       = "../credentials/senzr-313218-507b7a0a8637.json"
 )
+
+type CollectionData struct {
+	Value     float64   `json:"value" firestore:"value"`
+	Timestamp time.Time `json:"createdAt" firestore:"created_at"`
+}
 
 type Data struct {
 	Co2         float64 `json:"co2"`
@@ -27,58 +38,60 @@ type Message struct {
 	Data []byte `json:"data"`
 }
 
-func SensorDataReceiver(ctx context.Context, m Message) error {
+func SensorDataReceiver(ctx context.Context, m Message) (err error) {
 	var data Data
 	if err := json.Unmarshal(m.Data, &data); err != nil {
 		return fmt.Errorf("error unmarshalling data: %w", err)
 	}
-
-	db, err := newDBConnection()
+	client, err := NewClient(ctx)
 	if err != nil {
 		return fmt.Errorf("could not connect to database: %w", err)
 	}
-	tx, err := db.Beginx()
+	defer func() {
+		client.Close()
+	}()
+	ts, err := time.Parse(time.RFC3339, data.Timestamp)
 	if err != nil {
-		return fmt.Errorf("could not start transaction: %w", err)
+		return fmt.Errorf("parsing timestamp: %w", err)
 	}
-	tx.MustExec("INSERT INTO carbon_dioxide(value, created_at) VALUES($1, $2)", data.Co2, data.Timestamp)
-	tx.MustExec("INSERT INTO temperature(value, created_at) VALUES($1, $2)", data.Temperature, data.Timestamp)
-	tx.MustExec("INSERT INTO humidity(value, created_at) VALUES($1, $2)", data.Humidity, data.Timestamp)
-
-	if err := tx.Commit(); err != nil {
-		return fmt.Errorf("could not commit transaction: %w", err)
+	co2 := CollectionData{
+		Value:     data.Co2,
+		Timestamp: ts,
+	}
+	temperature := CollectionData{
+		Value:     data.Temperature,
+		Timestamp: ts,
+	}
+	humidity := CollectionData{
+		Value:     data.Humidity,
+		Timestamp: ts,
+	}
+	if _, err := client.Collection(CollectionCO2).NewDoc().Create(ctx, co2); err != nil {
+		return fmt.Errorf("writing co2 data: %w", err)
+	}
+	if _, err := client.Collection(CollectionTemperature).NewDoc().Create(ctx, temperature); err != nil {
+		return fmt.Errorf("writing co2 data: %w", err)
+	}
+	if _, err := client.Collection(CollectionHumidity).NewDoc().Create(ctx, humidity); err != nil {
+		return fmt.Errorf("writing co2 data: %w", err)
 	}
 	return nil
 }
 
-func newDBConnection() (_ *sqlx.DB, err error) {
-	defer func() {
-		if err != nil {
-			err = fmt.Errorf("connection error: %v", err)
-		}
-	}()
+func NewClient(ctx context.Context) (*firestore.Client, error) {
 	env, err := Env()
 	if err != nil {
 		return nil, fmt.Errorf("getting environment: %w", err)
 	}
-	db, err := sqlx.Connect(
-		driver,
-		fmt.Sprintf("user=%s password=%s database=%s host=%s",
-			env.DBUser, env.DBPassword, env.DBName, env.DBHost,
-		),
-	)
+	client, err := firestore.NewClient(ctx, env.Project, option.WithCredentialsFile(credentialsPath))
 	if err != nil {
-		return nil, fmt.Errorf("connecting: %w", err)
+		log.Fatalf("Failed to create client: %v", err)
 	}
-	return db, nil
+	return client, nil
 }
 
 type environment struct {
-	DBHost     string `envconfig:"db_host"`     // SENZR_DB_HOST
-	DBName     string `envconfig:"db_name"`     // SENZR_DB_NAME
-	DBPort     string `envconfig:"db_port"`     // SENZR_DB_PORT
-	DBUser     string `envconfig:"db_user"`     // SENZR_DB_USER
-	DBPassword string `envconfig:"db_password"` // SENZR_DB_PASSWORD
+	Project string `envconfig:"project" default:"senzr-313218"` // SENZR_PROJECT
 }
 
 func Env() (*environment, error) {
