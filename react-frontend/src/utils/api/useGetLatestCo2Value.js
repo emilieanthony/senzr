@@ -9,8 +9,8 @@ export const useGetLatestCo2Value = () => {
     async function getInitialData(){
       try {
         const data = await client.getLatestCo2Value()
-        if (data.length) {
-          setData(data[0])
+        if (data) {
+          setData(data)
           setState('success')
         }
       } catch (error) {
