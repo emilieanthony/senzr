@@ -1,13 +1,13 @@
 package cloud_receiver
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
 	"encoding/json"
 	"fmt"
-	"google.golang.org/api/option"
 	"log"
 	"time"
+
+	"cloud.google.com/go/firestore"
 
 	"github.com/kelseyhightower/envconfig"
 	_ "github.com/lib/pq"
@@ -17,7 +17,6 @@ const (
 	CollectionCO2         = "carbon_dioxide"
 	CollectionTemperature = "temperature"
 	CollectionHumidity    = "humidity"
-	credentialsPath       = "../credentials/senzr-313218-507b7a0a8637.json"
 )
 
 type CollectionData struct {
@@ -83,7 +82,7 @@ func NewClient(ctx context.Context) (*firestore.Client, error) {
 	if err != nil {
 		return nil, fmt.Errorf("getting environment: %w", err)
 	}
-	client, err := firestore.NewClient(ctx, env.Project, option.WithCredentialsFile(credentialsPath))
+	client, err := firestore.NewClient(ctx, env.Project)
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 	}
