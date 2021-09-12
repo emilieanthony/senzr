@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	readInterval = 5 * time.Second
+	readInterval = 1 * time.Minute
 )
 
 // TODO: cloud logger?
