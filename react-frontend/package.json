@@ -6,7 +6,7 @@
     "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "deploy": "yarn install && yarn build && yarn firebase deploy"
+    "deploy": "yarn install && yarn build && yarn firebase deploy --project senzr-313218"
   },
   "dependencies": {
     "@clerk/clerk-react": "^1.14.0",
