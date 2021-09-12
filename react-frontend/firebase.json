@@ -8,15 +8,15 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
-      },
-      {
         "source": "/api/*",
         "run": {
           "serviceId": "senzr-api",
           "region": "europe-west1"
         }
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
       }
     ],
     "headers": [
