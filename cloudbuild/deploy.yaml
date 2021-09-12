@@ -4,5 +4,5 @@ steps:
     entrypoint: "bash"
     dir: react-frontend
     args:
-      - "c"
+      - "-c"
       - "make deploy"
