@@ -1,0 +1,6 @@
+steps:
+  - id: deploy-frontend
+    name: gcr.io/cloud-builders/npm
+    entrypoint: "bash"
+    dir: react-frontend
+    args: ['make', 'deploy']
