@@ -2,6 +2,12 @@
   "name": "react-frontend",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "PORT=8080 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "deploy": "yarn install && yarn build && yarn firebase deploy"
+  },
   "dependencies": {
     "@clerk/clerk-react": "^1.14.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -14,10 +20,8 @@
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"
   },
-  "scripts": {
-    "start": "PORT=8080 react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test"
+  "devDependencies": {
+    "firebase-tools": "^9.18.0"
   },
   "eslintConfig": {
     "extends": [

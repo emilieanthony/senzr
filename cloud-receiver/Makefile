@@ -1,6 +1,6 @@
 include ../tools/golangci-lint/rules.mk
 
-develop: run-database
+develop:
 	go run ./main.go
 
 install:
