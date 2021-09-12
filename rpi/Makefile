@@ -3,7 +3,7 @@ include ../tools/golangci-lint/rules.mk
 package = github.com/emilieanthony/senzr/rpi
 out = build/rpi
 
-pico_software_version = 2.1.22
+pico_software_version = 2.1.21
 pico_software_name = usbtenki
 
 develop:
@@ -20,7 +20,7 @@ install-pico-deps:
 
 install-pico: install-pico-deps
 	mkdir -p tools
-	curl https://www.dracal.com/store/downloads/${pico_software_name}-${pico_software_version}.tar.gz --output ${pico_software_name}.tar.gz
+	curl -X POST -F 'somdn_download_key=MTYzMTQyOTQxOA==' -F 'action=somdn_download_single_variation' -F 'somdn_product=2747' -F 'somdn_variation=5645' https://www.dracal.com/en/product/qtenki/ --output ${pico_software_name}.tar.gz
 	tar xvzf ${pico_software_name}.tar.gz -C tools/
 	rm ${pico_software_name}.tar.gz
 	cd tools/${pico_software_name}-${pico_software_version}/client && make
