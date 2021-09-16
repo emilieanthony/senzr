@@ -2,21 +2,21 @@ package cloud
 
 import (
 	"context"
+	_ "embed"
 	"fmt"
 	"os"
-	"path/filepath"
+	"runtime"
 	"time"
-
-	"google.golang.org/api/option"
 
 	"cloud.google.com/go/pubsub"
 	"github.com/emilieanthony/senzr/rpi/sensor/pico"
+	"google.golang.org/api/option"
 )
 
 const (
 	topic           = "senzr_rpi_data"
-	credentialsFile = "senzr-313218-1450f27a71a6.json"
 	ProjectID       = "senzr-313218"
+	credentialsPath = "senzr-313218-1450f27a71a6.json"
 )
 
 type PubSub struct {
@@ -25,15 +25,14 @@ type PubSub struct {
 }
 
 func NewPubSubClient(ctx context.Context) (*PubSub, error) {
-	dir, err := os.Getwd()
+	path, err := getFilePath()
 	if err != nil {
-		return nil, fmt.Errorf("getting working directory: %w", err)
+		return nil, fmt.Errorf("reading path: %w", err)
 	}
-	parent := filepath.Dir(dir)
 	client, err := pubsub.NewClient(
 		ctx,
 		ProjectID,
-		option.WithCredentialsFile(parent+"/credentials/"+credentialsFile),
+		option.WithCredentialsFile(path+credentialsPath),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("creating client: %w", err)
@@ -60,4 +59,19 @@ func (p *PubSub) Publish(ctx context.Context, data *pico.Data) {
 
 func (p *PubSub) Stop() {
 	p.topic.Stop()
+}
+
+// hacky solution to distinguish prod linux env vs dev mac env
+func getFilePath() (string, error) {
+	operatingSys := runtime.GOOS
+	switch operatingSys {
+	case "linux":
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return "", err
+		}
+		return home + "/credentials/", nil
+	default:
+		return "credentials/", nil
+	}
 }
