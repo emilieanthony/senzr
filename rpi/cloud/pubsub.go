@@ -3,6 +3,8 @@ package cloud
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 
 	"google.golang.org/api/option"
@@ -13,7 +15,7 @@ import (
 
 const (
 	topic           = "senzr_rpi_data"
-	credentialsPath = "../credentials/senzr-313218-1450f27a71a6.json"
+	credentialsFile = "senzr-313218-1450f27a71a6.json"
 	ProjectID       = "senzr-313218"
 )
 
@@ -23,7 +25,16 @@ type PubSub struct {
 }
 
 func NewPubSubClient(ctx context.Context) (*PubSub, error) {
-	client, err := pubsub.NewClient(ctx, ProjectID, option.WithCredentialsFile(credentialsPath))
+	dir, err := os.Getwd()
+	if err != nil {
+		return nil, fmt.Errorf("getting working directory: %w", err)
+	}
+	parent := filepath.Dir(dir)
+	client, err := pubsub.NewClient(
+		ctx,
+		ProjectID,
+		option.WithCredentialsFile(parent+"/credentials/"+credentialsFile),
+	)
 	if err != nil {
 		return nil, fmt.Errorf("creating client: %w", err)
 	}
