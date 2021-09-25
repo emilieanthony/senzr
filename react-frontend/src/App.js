@@ -5,7 +5,6 @@ import {
   SignIn,
 } from '@clerk/clerk-react';
 import Header from './components/Header/Header'
-import Footer from './components/Footer/Footer'
 import Home from './pages/Home/Home'
 import './css/styles.css';
 
@@ -22,7 +21,6 @@ function App() {
           <div className="app-container">
             <Header />
             <Home />
-            <Footer />
           </div>
         </SignedIn>
       </div>
