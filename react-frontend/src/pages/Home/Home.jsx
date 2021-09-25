@@ -65,9 +65,9 @@ const Home = () => {
   const { state: hState, data: hData } = useGetLatestHumidityValue()
   return (
     <div className="container">
-      <Value title="Carbon Dioxide" value={cData?.value} unit="ppm" timestamp={cData?.createdAt} state={cState} level={calculateCarbonDioxideThreshold(10)} />
-      <Value title="Temperature" value={tData?.value} unit="C" timestamp={tData?.createdAt} state={tState} level={calculateTemperatureThreshold(24)} />
-      <Value title="Humidity" value={hData?.value} unit="%" timestamp={hData?.createdAt} state={hState} level={calculateHumidityThreshold(50)} />
+      <Value title="Carbon Dioxide" value={cData?.value} unit="ppm" timestamp={cData?.createdAt} state={cState} level={calculateCarbonDioxideThreshold(cData?.value)} />
+      <Value title="Temperature" value={tData?.value} unit="C" timestamp={tData?.createdAt} state={tState} level={calculateTemperatureThreshold(tData?.value)} />
+      <Value title="Humidity" value={hData?.value} unit="%" timestamp={hData?.createdAt} state={hState} level={calculateHumidityThreshold(hData?.value)} />
     </div>
   )
 }
