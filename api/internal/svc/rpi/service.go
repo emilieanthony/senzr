@@ -1,8 +1,12 @@
 package rpi
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 	"time"
+
+	"google.golang.org/api/iterator"
 
 	"github.com/emilieanthony/senzr/internal/db"
 
@@ -91,5 +95,56 @@ func (s *Server) GetLatestHumidityEntry(ctx *gin.Context) {
 		return
 	}
 	data.Id = document.Ref.ID
+	ctx.JSON(http.StatusOK, data)
+}
+
+// GetDurationAverageCarbonDioxide takes a query parameter "seconds" that is the duration from the current time
+// to calculate a CO2 average over.
+// Defaults to "43200" (12h) if not set. Max is 2592000 (30 days).
+func (s *Server) GetDurationAverageCarbonDioxide(ctx *gin.Context) {
+	const maxDurationSeconds = 2592000
+	durationParam := ctx.DefaultQuery("seconds", "43200")
+	durationSeconds, err := strconv.Atoi(durationParam)
+	if err != nil {
+		ctx.String(http.StatusBadRequest, "invalid duration. Duration can only contain numbers")
+		return
+	}
+	if durationSeconds > maxDurationSeconds {
+		ctx.String(
+			http.StatusBadRequest,
+			fmt.Sprintf("invalid duration. Duration cannot be greater than %d seconds", 2592000),
+		)
+		return
+	}
+	client, err := db.NewClient(ctx)
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, "could not get CO2 data")
+		return
+	}
+	defer func() {
+		client.Close()
+	}()
+	duration := time.Duration(durationSeconds) * time.Second
+	now := time.Now()
+	query := client.Collection(db.CollectionCO2).Where("created_at", ">", now.Add(-duration)).OrderBy("created_at", firestore.Desc)
+	iter := query.Documents(ctx)
+	defer iter.Stop()
+	data := make([]*entry, 0)
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			ctx.String(http.StatusInternalServerError, "could not get CO2 data")
+			return
+		}
+		var e *entry
+		if err := doc.DataTo(&e); err != nil {
+			ctx.String(http.StatusInternalServerError, "could not get CO2 data")
+			return
+		}
+		data = append(data, e)
+	}
 	ctx.JSON(http.StatusOK, data)
 }
