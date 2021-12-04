@@ -42,6 +42,7 @@ func main() {
 	v1.Use(Auth(clerkClient))
 	{
 		v1.GET("/co2/latest", rpiServer.GetLatestCarbonDioxideEntry)
+		v1.GET("/co2/duration", rpiServer.GetDurationAverageCarbonDioxide)
 		v1.GET("/temperature/latest", rpiServer.GetLatestTemperatureEntry)
 		v1.GET("/humidity/latest", rpiServer.GetLatestHumidityEntry)
 	}
@@ -56,6 +57,11 @@ func main() {
 
 func Auth(client clerk.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// remove auth in debug mode
+		if gin.Mode() == "debug" {
+			c.Next()
+			return
+		}
 		session, err := client.Verification().Verify(c.Request)
 		if err != nil {
 			c.String(http.StatusUnauthorized, "Unauthorized")
