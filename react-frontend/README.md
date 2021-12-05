@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## How to start
+
+To develop locally, you need to run both the backend and frontend simultaneously. Follow the steps
+described in the [README](../api/README.md) to start the backend.
+
+Then, run `yarn install` and `yarn start` in another terminal window to start the frontend.
+
 ## Available Scripts
 
 In the project directory, you can run:
