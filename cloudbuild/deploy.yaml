@@ -6,3 +6,10 @@ steps:
     args:
       - "-c"
       - "make deploy"
+  - id: deploy-api
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: "bash"
+    dir: api
+    args:
+      - "-c"
+      - "make deploy"
