@@ -5,7 +5,8 @@
   "scripts": {
     "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "CI=true react-scripts test --watchAll=false --passWithNoTests",
+    "lint": "eslint ./src --fix",
     "deploy": "yarn install && yarn build && yarn firebase deploy --project senzr-313218"
   },
   "dependencies": {

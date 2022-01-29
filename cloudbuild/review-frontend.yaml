@@ -1,0 +1,17 @@
+steps:
+  - id: install
+    name: node:16
+    dir: react-frontend
+    args: ['yarn', 'install']
+
+  - id: lint
+    name: node:16
+    dir: react-frontend
+    waitFor: ["install"]
+    args: ['yarn', 'lint']
+
+  - id: test
+    name: node:16
+    dir: react-frontend
+    waitFor: ["install"]
+    args: ['yarn', 'test']
