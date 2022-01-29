@@ -3,6 +3,7 @@ steps:
     name: gcr.io/cloud-builders/npm
     entrypoint: "bash"
     dir: react-frontend
+    waitFor: ["-"]
     args:
       - "-c"
       - "make deploy"
@@ -10,6 +11,7 @@ steps:
     name: gcr.io/cloud-builders/gcloud
     entrypoint: "bash"
     dir: api
+    waitFor: ["-"]
     args:
       - "-c"
       - "make deploy"
