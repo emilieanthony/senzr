@@ -21,19 +21,21 @@
 }
 
 .title {
-  font-size: 2rem;
-  line-height: 1rem;
+  font-size: 24px;
+  line-height: 24px;
   padding: 0 0 0 0.25rem;
   position: absolute;
   top: 24px;
   text-align: center;
   width: 100%;
+  font-weight: 400;
 }
 
 .value {
-  font-size: 6rem;
-  line-height: 4rem;
+  font-size: 48px;
+  line-height: 48px;
   margin: 0;
+  font-weight: 400;
 }
 
 .error {
