@@ -60,7 +60,7 @@ p {
 }
 
 .app-background {
-  background-image: url("../assets/clouds.png");
+  background-image: url("../assets/bg.png");
   width: 100vw;
   height: 100vh;
 }
