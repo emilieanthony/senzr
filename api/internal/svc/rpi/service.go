@@ -26,6 +26,52 @@ func (s *Server) Ping(ctx *gin.Context) {
 	ctx.String(http.StatusOK, "pong")
 }
 
+type dailyAverage struct {
+	Value float64 `json:"value"`
+}
+
+func (s *Server) GetDailyAverageCarbonDioxide (ctx *gin.Context){
+	client, err := db.NewClient(ctx)
+	defer func(){
+		client.Close()
+	}()
+	if err !=nil{
+		ctx.String(http.StatusInternalServerError, "GetDailyAverageCarbonDioxide: creating client")
+		return
+	}
+	year, month, day := time.Now().Date()
+	midnight := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+	query := client.Collection(db.CollectionCO2).Where("created_at", ">", midnight)
+	iter := query.Documents(ctx)
+	defer iter.Stop()
+	totalRecordsCount := 0
+	totalCo2 := 0
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			ctx.String(http.StatusInternalServerError, "could not get CO2 data")
+			return
+		}
+		var e *entry
+		if err := doc.DataTo(&e); err != nil {
+			ctx.String(http.StatusInternalServerError, "could not get CO2 data")
+			return
+		}
+		totalCo2 += int(e.Value)
+		totalRecordsCount++
+	}
+	if totalRecordsCount == 0{
+		totalRecordsCount = 1
+	}
+	average := dailyAverage{
+		Value: float64(totalCo2)/float64(totalRecordsCount),
+	}
+	ctx.JSON(http.StatusOK, average)
+}
+
 func (s *Server) GetLatestCarbonDioxideEntry(ctx *gin.Context) {
 	client, err := db.NewClient(ctx)
 	defer func() {

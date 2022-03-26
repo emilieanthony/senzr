@@ -70,3 +70,9 @@ p {
   justify-content: center;
   align-items: flex-start;
 }
+
+@media screen and (max-width: 720px) {
+  .app-background {
+    height: auto;
+  }
+}
