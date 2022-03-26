@@ -1,18 +1,16 @@
-import React, { useMemo } from 'react'
-import { format } from "date-fns";
-import './value.css';
+import React, { useMemo } from "react";
+import "./value.css";
 
-const Value = ({title, value, unit, timestamp, state, level}) => {
-
+const Value = ({ title, value, unit, timestamp, state, level }) => {
   const renderState = useMemo(() => {
-    if(state === 'error') {
-    return "error"
-  } else if (state === 'loading' || !value || !timestamp) {
-    return "loading"
-  } else {
-    return "success"
-  }
-  }, [state, value, timestamp])
+    if (state === "error") {
+      return "error";
+    } else if (state === "loading" || !value || !timestamp) {
+      return "loading";
+    } else {
+      return "success";
+    }
+  }, [state, value, timestamp]);
 
   return (
     <div className="metric">
@@ -21,12 +19,13 @@ const Value = ({title, value, unit, timestamp, state, level}) => {
       {renderState === "loading" && <p className="center-text">Loading...</p>}
       {renderState === "success" && (
         <>
-        <h2 className={`value ${level}`}>{Math.floor(value)} {unit}</h2>
-        <h6 className="timestamp">{format(Date.parse(timestamp), 'PP kk:mm:ss')}</h6>
-      </>
+          <h2 className={`value ${level}`}>
+            {Math.floor(value)} {unit}
+          </h2>
+        </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Value
+export default Value;
