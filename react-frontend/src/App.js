@@ -1,5 +1,4 @@
 import { ClerkProvider, SignedIn, SignedOut, SignIn } from "@clerk/clerk-react";
-import Header from "./components/Header/Header";
 import Home from "./pages/Home/Home";
 import "./css/styles.css";
 
@@ -14,7 +13,6 @@ function App() {
         </SignedOut>
         <SignedIn>
           <div className="app-container">
-            <Header />
             <Home />
           </div>
         </SignedIn>

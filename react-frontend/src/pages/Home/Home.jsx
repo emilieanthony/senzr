@@ -80,7 +80,7 @@ const Home = () => {
     <div className="container">
       <Card>
         <Value
-          title="Carbon Dioxide"
+          title="Live Carbon Dioxide"
           value={cData?.value}
           unit="ppm"
           timestamp={cData?.createdAt}
@@ -90,22 +90,22 @@ const Home = () => {
       </Card>
       <Card>
         <Value
-          title="Temperature"
-          value={tData?.value}
+          title="Average / Day"
+          /* value={tData?.value}
           unit="C"
           timestamp={tData?.createdAt}
           state={tState}
-          level={calculateTemperatureThreshold(tData?.value)}
+          level={calculateTemperatureThreshold(tData?.value)} */
         />
       </Card>
       <Card>
         <Value
-          title="Humidity"
-          value={hData?.value}
+          title="Week"
+          /* value={hData?.value}
           unit="%"
           timestamp={hData?.createdAt}
           state={hState}
-          level={calculateHumidityThreshold(hData?.value)}
+          level={calculateHumidityThreshold(hData?.value)} */
         />
       </Card>
     </div>
