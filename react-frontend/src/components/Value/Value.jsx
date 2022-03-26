@@ -18,7 +18,7 @@ const Value = ({title, value, unit, timestamp, state, level}) => {
     <div className="metric">
       <h1 className="title">{title}</h1>
       {renderState === "error" && <p className="error">An error occured.</p>}
-      {renderState === "loading" && <p>Loading...</p>}
+      {renderState === "loading" && <p className="center-text">Loading...</p>}
       {renderState === "success" && (
         <>
         <h2 className={`value ${level}`}>{Math.floor(value)} {unit}</h2>

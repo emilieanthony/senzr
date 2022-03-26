@@ -98,16 +98,18 @@ const Home = () => {
           level={calculateTemperatureThreshold(tData?.value)} */
         />
       </Card>
-      <Card>
-        <Value
-          title="Week"
-          /* value={hData?.value}
+      <div className="full-width-card">
+        <Card>
+          <Value
+            title="Week"
+            /* value={hData?.value}
           unit="%"
           timestamp={hData?.createdAt}
           state={hState}
           level={calculateHumidityThreshold(hData?.value)} */
-        />
-      </Card>
+          />
+        </Card>
+      </div>
     </div>
   );
 };
