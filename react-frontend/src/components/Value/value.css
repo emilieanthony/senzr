@@ -13,14 +13,21 @@
 .metric {
   display: flex;
   flex-direction: column;
-  text-align: start;
+  text-align: center;
   margin: 0 0 0.5rem 0;
+  height: 100%;
+  justify-content: center;
+  position: relative;
 }
 
 .title {
   font-size: 2rem;
   line-height: 1rem;
   padding: 0 0 0 0.25rem;
+  position: absolute;
+  top: 24px;
+  text-align: center;
+  width: 100%;
 }
 
 .value {
@@ -37,4 +44,9 @@
 
 .error {
   color: #ff3333;
+}
+
+.center-text {
+  text-align: center;
+  width: 100%;
 }

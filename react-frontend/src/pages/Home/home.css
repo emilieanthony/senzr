@@ -1,8 +1,15 @@
 .container {
-  display: flex;
+  display: grid;
+  gap: 24px;
   flex-direction: column;
   text-align: center;
   justify-content: center;
   padding: 1rem 2rem;
-  width: 700px;
+  width: 888px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 432px auto;
+}
+
+.full-width-card {
+  grid-column: 1 / span 2;
 }
