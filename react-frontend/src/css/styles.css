@@ -67,7 +67,7 @@ p {
 
 .app-container {
   height: 100%;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 64px 1fr 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
