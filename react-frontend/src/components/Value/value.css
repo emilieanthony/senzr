@@ -1,13 +1,13 @@
 .good {
-  color: green;
+  color: #74bb5a;
 }
 
 .medium {
-  color: #ffff00;
+  color: #e7c346;
 }
 
 .bad {
-  color: #ff3333;
+  color: #f46a6a;
 }
 
 .metric {
