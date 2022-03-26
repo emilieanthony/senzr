@@ -1,16 +1,16 @@
 import React, { useMemo } from "react";
 import "./value.css";
 
-const Value = ({ title, value, unit, timestamp, state, level }) => {
+const Value = ({ title, value, unit, state, level }) => {
   const renderState = useMemo(() => {
     if (state === "error") {
       return "error";
-    } else if (state === "loading" || !value || !timestamp) {
+    } else if (state === "loading" || !value) {
       return "loading";
     } else {
       return "success";
     }
-  }, [state, value, timestamp]);
+  }, [state, value]);
 
   return (
     <div className="metric">

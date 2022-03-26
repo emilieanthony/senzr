@@ -1,7 +1,6 @@
 .container {
   display: grid;
   gap: 24px;
-  flex-direction: column;
   text-align: center;
   justify-content: center;
   padding: 1rem 2rem;
@@ -12,4 +11,14 @@
 
 .full-width-card {
   grid-column: 1 / span 2;
+}
+
+@media screen and (max-width: 720px) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 432px 432px 432px;
+  }
+  .full-width-card {
+    grid-column: auto;
+  }
 }

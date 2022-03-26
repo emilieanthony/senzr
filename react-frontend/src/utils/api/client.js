@@ -1,28 +1,20 @@
-const BASE_URL = "api/v1"
+const BASE_URL = "api/v1";
 
 export const client = {
   getLatestCo2Value: async () => {
-    const response = await fetch(`${BASE_URL}/co2/latest`)
+    const response = await fetch(`${BASE_URL}/co2/latest`);
     if (response.status >= 200 || response.status < 300) {
-      const body = await response.json()
-      return body
+      const body = await response.json();
+      return body;
     }
-    throw new Error(`${response.status}: ${response.statusText}`)
+    throw new Error(`${response.status}: ${response.statusText}`);
   },
-  getLatestTemperatureValue: async () => {
-    const response = await fetch(`${BASE_URL}/temperature/latest`)
+  getDailyAverageCo2Value: async () => {
+    const response = await fetch(`${BASE_URL}/co2/daily-average`);
     if (response.status >= 200 || response.status < 300) {
-      const body = await response.json()
-      return body
+      const body = await response.json();
+      return body;
     }
-    throw new Error(`${response.status}: ${response.statusText}`)
+    throw new Error(`${response.status}: ${response.statusText}`);
   },
-  getLatestHumidityValue: async () => {
-    const response = await fetch(`${BASE_URL}/humidity/latest`)
-    if (response.status >= 200 || response.status < 300) {
-      const body = await response.json()
-      return body
-    }
-    throw new Error(`${response.status}: ${response.statusText}`)
-  }
-}
+};

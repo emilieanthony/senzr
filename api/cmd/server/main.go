@@ -43,6 +43,7 @@ func main() {
 	{
 		v1.GET("/co2/latest", rpiServer.GetLatestCarbonDioxideEntry)
 		v1.GET("/co2/duration", rpiServer.GetDurationAverageCarbonDioxide)
+		v1.GET("/co2/daily-average", rpiServer.GetDailyAverageCarbonDioxide)
 		v1.GET("/temperature/latest", rpiServer.GetLatestTemperatureEntry)
 		v1.GET("/humidity/latest", rpiServer.GetLatestHumidityEntry)
 	}
