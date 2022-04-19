@@ -63,7 +63,7 @@ func (s *Server) GetDailyAverageCarbonDioxide (ctx *gin.Context){
 		totalCo2 += int(e.Value)
 		totalRecordsCount++
 	}
-	if totalRecordsCount == 0{
+	if totalRecordsCount == 0 {
 		totalRecordsCount = 1
 	}
 	average := dailyAverage{
