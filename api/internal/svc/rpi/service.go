@@ -35,7 +35,7 @@ func (s *Server) GetDailyAverageCarbonDioxide (ctx *gin.Context){
 	defer func(){
 		client.Close()
 	}()
-	if err !=nil{
+	if err != nil {
 		ctx.String(http.StatusInternalServerError, "GetDailyAverageCarbonDioxide: creating client")
 		return
 	}
