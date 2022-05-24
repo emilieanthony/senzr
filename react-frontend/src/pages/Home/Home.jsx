@@ -18,7 +18,7 @@ const calculateCarbonDioxideThreshold = (co2) => {
 };
 
 const Home = () => {
-  const { state: cState, data: cData } = useGetLatestCo2Value();
+  const { state: liveState, data: liveData } = useGetLatestCo2Value();
   const { state: dailyAverageState, data: dailyAverage } =
     useGetDailyAverageCo2Value();
   return (
@@ -26,10 +26,10 @@ const Home = () => {
       <Card>
         <Value
           title="Live Carbon Dioxide"
-          value={cData?.value}
+          value={liveData?.value}
           unit="ppm"
-          state={cState}
-          level={calculateCarbonDioxideThreshold(cData?.value)}
+          state={liveState}
+          level={calculateCarbonDioxideThreshold(liveData?.value)}
         />
       </Card>
       <Card>
