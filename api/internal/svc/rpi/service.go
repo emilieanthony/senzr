@@ -30,9 +30,9 @@ type dailyAverage struct {
 	Value float64 `json:"value"`
 }
 
-func (s *Server) GetDailyAverageCarbonDioxide (ctx *gin.Context){
+func (s *Server) GetDailyAverageCarbonDioxide(ctx *gin.Context) {
 	client, err := db.NewClient(ctx)
-	defer func(){
+	defer func() {
 		client.Close()
 	}()
 	if err != nil {
@@ -67,7 +67,7 @@ func (s *Server) GetDailyAverageCarbonDioxide (ctx *gin.Context){
 		totalRecordsCount = 1
 	}
 	average := dailyAverage{
-		Value: float64(totalCo2)/float64(totalRecordsCount),
+		Value: float64(totalCo2) / float64(totalRecordsCount),
 	}
 	ctx.JSON(http.StatusOK, average)
 }
@@ -90,54 +90,6 @@ func (s *Server) GetLatestCarbonDioxideEntry(ctx *gin.Context) {
 	var data *entry
 	if err := document.DataTo(&data); err != nil {
 		ctx.String(http.StatusInternalServerError, "GetLatestCarbonDioxideEntry: reading from database")
-		return
-	}
-	data.Id = document.Ref.ID
-	ctx.JSON(http.StatusOK, data)
-}
-
-func (s *Server) GetLatestTemperatureEntry(ctx *gin.Context) {
-	client, err := db.NewClient(ctx)
-	defer func() {
-		client.Close()
-	}()
-	if err != nil {
-		ctx.String(http.StatusInternalServerError, "GetLatestTemperatureEntry: creating client")
-		return
-	}
-	query := client.Collection(db.CollectionTemperature).OrderBy("created_at", firestore.Desc).Limit(1)
-	document, err := query.Documents(ctx).Next()
-	if err != nil {
-		ctx.String(http.StatusInternalServerError, "GetLatestTemperatureEntry: getting from database")
-		return
-	}
-	var data *entry
-	if err := document.DataTo(&data); err != nil {
-		ctx.String(http.StatusInternalServerError, "GetLatestTemperatureEntry: reading from database")
-		return
-	}
-	data.Id = document.Ref.ID
-	ctx.JSON(http.StatusOK, data)
-}
-
-func (s *Server) GetLatestHumidityEntry(ctx *gin.Context) {
-	client, err := db.NewClient(ctx)
-	defer func() {
-		client.Close()
-	}()
-	if err != nil {
-		ctx.String(http.StatusInternalServerError, "GetLatestHumidityEntry: creating client")
-		return
-	}
-	query := client.Collection(db.CollectionHumidity).OrderBy("created_at", firestore.Desc).Limit(1)
-	document, err := query.Documents(ctx).Next()
-	if err != nil {
-		ctx.String(http.StatusInternalServerError, "GetLatestHumidityEntry: getting from database")
-		return
-	}
-	var data *entry
-	if err := document.DataTo(&data); err != nil {
-		ctx.String(http.StatusInternalServerError, "GetLatestHumidityEntry: reading from database")
 		return
 	}
 	data.Id = document.Ref.ID
