@@ -35,6 +35,9 @@ install:
 test:
 	go test ./...
 
+run:
+	nohup build/rpi &
+
 lint: golangci-lint
 
 build: build-rpi install
