@@ -41,27 +41,20 @@ func (s *Server) GetDailyAverageCarbonDioxide(ctx *gin.Context) {
 	}
 	year, month, day := time.Now().Date()
 	midnight := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
-	query := client.Collection(db.CollectionCO2).Where("created_at", ">", midnight)
-	iter := query.Documents(ctx)
-	defer iter.Stop()
-	totalRecordsCount := 0
+	query := client.Collection(db.CollectionCO2).Where("created_at", ">=", midnight)
+	documents, err := query.Documents(ctx).GetAll()
+	if err != nil {
+		ctx.String(http.StatusInternalServerError, "could not get CO2 data")
+	}
+	totalRecordsCount := len(documents)
 	totalCo2 := 0
-	for {
-		doc, err := iter.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			ctx.String(http.StatusInternalServerError, "could not get CO2 data")
-			return
-		}
+	for _, doc := range documents {
 		var e *entry
 		if err := doc.DataTo(&e); err != nil {
 			ctx.String(http.StatusInternalServerError, "could not get CO2 data")
 			return
 		}
 		totalCo2 += int(e.Value)
-		totalRecordsCount++
 	}
 	if totalRecordsCount == 0 {
 		totalRecordsCount = 1
