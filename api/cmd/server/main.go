@@ -42,7 +42,7 @@ func main() {
 	v1.Use(Auth(clerkClient))
 	{
 		v1.GET("/co2/latest", rpiServer.GetLatestCarbonDioxideEntry)
-		v1.GET("/co2/duration", rpiServer.GetDurationAverageCarbonDioxide)
+		v1.GET("/co2/duration", rpiServer.GetDurationCarbonDioxide)
 		v1.GET("/co2/daily-average", rpiServer.GetDailyAverageCarbonDioxide)
 	}
 

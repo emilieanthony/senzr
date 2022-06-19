@@ -96,10 +96,10 @@ func (s *Server) GetLatestCarbonDioxideEntry(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, data)
 }
 
-// GetDurationAverageCarbonDioxide takes a query parameter "seconds" that is the duration from the current time
-// to calculate a CO2 average over.
+// GetDurationCarbonDioxide takes a query parameter "seconds" that is the duration from the current time
+// to get CO2 data over.
 // Defaults to "43200" (12h) if not set. Max is 2592000 (30 days).
-func (s *Server) GetDurationAverageCarbonDioxide(ctx *gin.Context) {
+func (s *Server) GetDurationCarbonDioxide(ctx *gin.Context) {
 	const maxDurationSeconds = 2592000
 	durationParam := ctx.DefaultQuery("seconds", "43200")
 	durationSeconds, err := strconv.Atoi(durationParam)
