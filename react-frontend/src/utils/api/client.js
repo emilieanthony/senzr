@@ -17,4 +17,12 @@ export const client = {
     }
     throw new Error(`${response.status}: ${response.statusText}`);
   },
+  getWeeklyTimeSeries: async () => {
+    const response = await fetch(`${BASE_URL}/co2/duration?seconds=604800`);
+    if (response.status >= 200 || response.status < 300) {
+      const body = await response.json();
+      return body;
+    }
+    throw new Error(`${response.status}: ${response.statusText}`);
+  },
 };

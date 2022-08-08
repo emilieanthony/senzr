@@ -2,6 +2,7 @@ package rpi
 
 import (
 	"fmt"
+	"math"
 	"net/http"
 	"strconv"
 	"time"
@@ -117,11 +118,13 @@ func (s *Server) GetDurationCarbonDioxide(ctx *gin.Context) {
 	}()
 	duration := time.Duration(durationSeconds) * time.Second
 	now := time.Now()
-	query := client.Collection(db.CollectionCO2).Where("created_at", ">", now.Add(-duration)).OrderBy("created_at", firestore.Desc)
+	query := client.Collection(db.CollectionCO2).Where("created_at", ">", now.Add(-duration)).OrderBy("created_at", firestore.Asc)
 	iter := query.Documents(ctx)
 	defer iter.Stop()
 	data := make([]*entry, 0)
+	i := 0
 	for {
+		i++
 		doc, err := iter.Next()
 		if err == iterator.Done {
 			break
@@ -135,7 +138,10 @@ func (s *Server) GetDurationCarbonDioxide(ctx *gin.Context) {
 			ctx.String(http.StatusInternalServerError, "could not get CO2 data")
 			return
 		}
-		data = append(data, e)
+		if i % 20 == 0 {
+			e.Value = math.Round(e.Value)
+			data = append(data, e)
+		}
 	}
 	ctx.JSON(http.StatusOK, data)
 }
